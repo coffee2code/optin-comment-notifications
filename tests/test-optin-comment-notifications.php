@@ -1,8 +1,10 @@
 <?php
 
+defined( 'ABSPATH' ) or die();
+
 class Optin_Comment_Notifications_Test extends WP_UnitTestCase {
 
-	function tearDown() {
+	public function tearDown() {
 		parent::tearDown();
 		$this->unset_current_user();
 		// Ensure the filter gets removed
@@ -10,9 +12,11 @@ class Optin_Comment_Notifications_Test extends WP_UnitTestCase {
 	}
 
 
-	/*
-	 * HELPER FUNCTIONS
-	 */
+	//
+	//
+	// HELPER FUNCTIONS
+	//
+	//
 
 
 	private function create_user( $email, $optin = false, $role = 'subscriber' ) {
@@ -35,12 +39,14 @@ class Optin_Comment_Notifications_Test extends WP_UnitTestCase {
 	}
 
 
-	/*
-	 * FUNCTIONS FOR HOOKING ACTIONS/FILTERS
-	 */
+	//
+	//
+	// FUNCTIONS FOR HOOKING ACTIONS/FILTERS
+	//
+	//
 
 
-	function restrict_capability( $default, $caps ) {
+	public function restrict_capability( $default, $caps ) {
 		// Only administrators and editors can subscribe to all comments.
 		return !! array_intersect(
 			(array) wp_get_current_user()->roles, // Get current user's roles.
@@ -49,16 +55,18 @@ class Optin_Comment_Notifications_Test extends WP_UnitTestCase {
 	}
 
 
-	/*
-	 * TESTS
-	 */
+	//
+	//
+	// TESTS
+	//
+	//
 
 
-	function test_plugin_version() {
-		$this->assertEquals( '1.0', c2c_Optin_Comment_Notifications::version() );
+	public function test_plugin_version() {
+		$this->assertEquals( '1.1', c2c_Optin_Comment_Notifications::version() );
 	}
 
-	function test_opted_in_user_is_notified_about_new_comment() {
+	public function test_opted_in_user_is_notified_about_new_comment() {
 		$post_id    = $this->factory->post->create();
 		$email      = 'admin@example.com';
 		$user_id    = $this->create_user( $email, true, 'administrator' );
@@ -67,7 +75,7 @@ class Optin_Comment_Notifications_Test extends WP_UnitTestCase {
 		$this->assertEquals( array( $email ), apply_filters( 'comment_notification_recipients', array(), $comment_id ) );
 	}
 
-	function test_non_opted_in_user_is_not_notified_about_new_comment() {
+	public function test_non_opted_in_user_is_not_notified_about_new_comment() {
 		$post_id    = $this->factory->post->create();
 		$email      = 'admin@example.com';
 		$user_id    = $this->create_user( $email, false, 'administrator' );
@@ -76,7 +84,7 @@ class Optin_Comment_Notifications_Test extends WP_UnitTestCase {
 		$this->assertEmpty( apply_filters( 'comment_notification_recipients', array(), $comment_id ) );
 	}
 
-	function test_opted_in_user_is_not_notified_about_their_own_comment() {
+	public function test_opted_in_user_is_not_notified_about_their_own_comment() {
 		$post_id    = $this->factory->post->create();
 		$email      = 'admin@example.com';
 		$user_id    = $this->create_user( $email, true, 'administrator' );
@@ -85,7 +93,7 @@ class Optin_Comment_Notifications_Test extends WP_UnitTestCase {
 		$this->assertEmpty( apply_filters( 'comment_notification_recipients', array(), $comment_id ) );
 	}
 
-	function test_commenter_with_moderate_comments_capability_is_notified_about_moderated_comment() {
+	public function test_commenter_with_moderate_comments_capability_is_notified_about_moderated_comment() {
 		$post_id    = $this->factory->post->create();
 		$email      = 'admin@example.com';
 		$user_id    = $this->create_user( $email, true, 'administrator' );
@@ -94,7 +102,7 @@ class Optin_Comment_Notifications_Test extends WP_UnitTestCase {
 		$this->assertEquals( array( $email ), apply_filters( 'comment_moderation_recipients', array(), $comment_id ) );
 	}
 
-	function test_commenter_without_moderate_comments_capability_is_not_notified_about_moderated_comment() {
+	public function test_commenter_without_moderate_comments_capability_is_not_notified_about_moderated_comment() {
 		$post_id    = $this->factory->post->create();
 		$email      = 'subscriber@example.com';
 		$user_id    = $this->create_user( $email, true, 'subscriber' );
@@ -103,7 +111,7 @@ class Optin_Comment_Notifications_Test extends WP_UnitTestCase {
 		$this->assertEmpty( apply_filters( 'comment_moderation_recipients', array(), $comment_id ) );
 	}
 
-	function test_opted_in_user_is_not_notified_about_new_comment_if_capability_is_changed() {
+	public function test_opted_in_user_is_not_notified_about_new_comment_if_capability_is_changed() {
 		$post_id    = $this->factory->post->create();
 		$email      = 'subscriber@example.com';
 		$user_id    = $this->create_user( $email, true, 'subscriber' );
@@ -114,7 +122,7 @@ class Optin_Comment_Notifications_Test extends WP_UnitTestCase {
 		$this->assertEmpty( apply_filters( 'comment_moderation_recipients', array(), $comment_id ) );
 	}
 
-	function test_user_is_not_double_notified() {
+	public function test_user_is_not_double_notified() {
 		$post_id    = $this->factory->post->create();
 		$email      = 'admin@example.com';
 		$user_id    = $this->create_user( $email, true, 'administrator' );
@@ -123,7 +131,7 @@ class Optin_Comment_Notifications_Test extends WP_UnitTestCase {
 		$this->assertEquals( array( $email ), apply_filters( 'comment_notification_recipients', array( $email ), $comment_id ) );
 	}
 
-	function test_verify_existing_notification_email_addresses_are_not_dropped_when_adding() {
+	public function test_verify_existing_notification_email_addresses_are_not_dropped_when_adding() {
 		$post_id    = $this->factory->post->create();
 		$email      = 'admin@example.com';
 		$emails     = array( 'a@example.com', 'b@example.com' );
@@ -133,7 +141,7 @@ class Optin_Comment_Notifications_Test extends WP_UnitTestCase {
 		$this->assertEquals( array_merge( $emails, array( $email ) ), apply_filters( 'comment_notification_recipients', $emails, $comment_id ) );
 	}
 
-	function test_verify_existing_notification_email_addresses_are_not_dropped_when_not_adding() {
+	public function test_verify_existing_notification_email_addresses_are_not_dropped_when_not_adding() {
 		$post_id    = $this->factory->post->create();
 		$email      = 'subscriber@example.com';
 		$emails     = array( 'a@example.com', 'b@example.com' );
@@ -143,7 +151,7 @@ class Optin_Comment_Notifications_Test extends WP_UnitTestCase {
 		$this->assertEquals( $emails, apply_filters( 'comment_notification_recipients', $emails, $comment_id ) );
 	}
 
-	function test_checkbox_is_output_for_low_privilege_user( $value = false ) {
+	public function test_checkbox_is_output_for_low_privilege_user( $value = false ) {
 		$user_id = $this->create_user( 'test@example.com', $value, 'subscriber' );
 		wp_set_current_user( $user_id );
 
@@ -158,19 +166,19 @@ class Optin_Comment_Notifications_Test extends WP_UnitTestCase {
 		return $output;
 	}
 
-	function test_checkbox_is_output_as_checked_when_option_is_set() {
+	public function test_checkbox_is_output_as_checked_when_option_is_set() {
 		$output = $this->test_checkbox_is_output_for_low_privilege_user( true );
 
 		$this->assertRegExp( '/checked=\'checked\'/', $output );
 	}
 
-	function test_checkbox_is_not_output_as_checked_when_option_is_not_set() {
+	public function test_checkbox_is_not_output_as_checked_when_option_is_not_set() {
 		$output = $this->test_checkbox_is_output_for_low_privilege_user( false );
 
 		$this->assertNotRegExp( '/checked=\'checked\'/', $output );
 	}
 
-	function test_checkbox_not_output_if_user_not_capable() {
+	public function test_checkbox_not_output_if_user_not_capable() {
 		$user_id = $this->create_user( 'test@example.com', false, 'subscriber' );
 		wp_set_current_user( $user_id );
 		add_filter( 'c2c_optin_comment_notifications_has_cap', array( $this, 'restrict_capability' ), 10, 2 );
@@ -183,13 +191,13 @@ class Optin_Comment_Notifications_Test extends WP_UnitTestCase {
 		$this->assertEmpty( $output );
 	}
 
-	function test_default_capability_is_true_for_low_privilege_user() {
+	public function test_default_capability_is_true_for_low_privilege_user() {
 		$user_id = $this->create_user( 'test@example.com', false, 'subscriber' );
 
 		$this->assertTrue( user_can( $user_id, c2c_Optin_Comment_Notifications::$cap_name ) );
 	}
 
-	function test_filter_allows_customizing_capability() {
+	public function test_filter_allows_customizing_capability() {
 		$user_id = $this->create_user( 'test@example.com', false, 'subscriber' );
 
 		add_filter( 'c2c_optin_comment_notifications_has_cap', array( $this, 'restrict_capability' ), 10, 2 );

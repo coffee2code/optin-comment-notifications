@@ -1,17 +1,16 @@
 <?php
 /**
  * Plugin Name: Optin Comment Notifications
- * Version:     1.0
+ * Version:     1.1
  * Plugin URI:  http://coffee2code.com/wp-plugins/optin-comment-notifications/
  * Author:      Scott Reilly
  * Author URI:  http://coffee2code.com/
  * Text Domain: optin-comment-notifications
- * Domain Path: /lang/
  * License:     GPLv2 or later
  * License URI: http://www.gnu.org/licenses/gpl-2.0.html
  * Description: Allows users to opt into receiving a notification whenever a comment is made to the site.
  *
- * Compatible with WordPress 3.8 through 4.1+.
+ * Compatible with WordPress 4.1 through 4.4+.
  *
  * =>> Read the accompanying readme.txt file for instructions and documentation.
  * =>> Also, visit the plugin's homepage for additional information and updates.
@@ -19,11 +18,11 @@
  *
  * @package Optin_Comment_Notifications
  * @author  Scott Reilly
- * @version 1.0
+ * @version 1.1
  */
 
 /*
-	Copyright (c) 2014-2015 by Scott Reilly (aka coffee2code)
+	Copyright (c) 2014-2016 by Scott Reilly (aka coffee2code)
 
 	This program is free software; you can redistribute it and/or
 	modify it under the terms of the GNU General Public License
@@ -50,7 +49,7 @@ class c2c_Optin_Comment_Notifications {
 	 * Meta key name for flag to indicate if user has opted into being notified of
 	 * all new comments.
 	 *
-	 * @var array
+	 * @var string
 	 * @access public
 	 */
 	public static $option_name = 'c2c_comment_notification_optin';
@@ -77,7 +76,7 @@ class c2c_Optin_Comment_Notifications {
 	 * @since 1.0
 	 */
 	public static function version() {
-		return '1.0';
+		return '1.1';
 	}
 
 	/**
@@ -96,7 +95,7 @@ class c2c_Optin_Comment_Notifications {
 	 */
 	public static function do_init() {
 		// Load textdomain
-		load_plugin_textdomain( 'optin-comment-notifications', false, basename( dirname( __FILE__ ) ) );
+		load_plugin_textdomain( 'optin-comment-notifications' );
 
 		// Restrict ability to subscribe to comments.
 		add_filter( 'user_has_cap',                    array( __CLASS__, 'assign_subscribe_caps' ) );
@@ -205,8 +204,8 @@ class c2c_Optin_Comment_Notifications {
 		<tr>
 			<th scope="row"><?php _e( 'New Comment Emails', 'optin-comment-notifications' ); ?></th>
 			<td>
-				<label for="<?php esc_attr_e( self::$option_name ); ?>">
-					<input name="<?php esc_attr_e( self::$option_name ); ?>" type="checkbox" id="<?php esc_attr_e( self::$option_name ); ?>" value="<?php esc_attr_e( self::$yes_option_value ); ?>"<?php echo $checked; ?> />
+				<label for="<?php echo esc_attr( self::$option_name ); ?>">
+					<input name="<?php echo esc_attr( self::$option_name ); ?>" type="checkbox" id="<?php echo esc_attr( self::$option_name ); ?>" value="<?php echo esc_attr( self::$yes_option_value ); ?>"<?php echo $checked; ?> />
 					<?php _e( 'Email me whenever a comment is submitted to the site.', 'optin-comment-notifications' ); ?>
 				</label>
 			</td>
