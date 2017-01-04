@@ -72,6 +72,9 @@ add_filter( 'c2c_optin_comment_notifications_has_cap', 'restrict_optin_comment_n
 
 == Changelog ==
 
+= () =
+* Change: Default `WP_TESTS_DIR` to `/tmp/wordpress-tests-lib` rather than erroring out if not defined via environment variable.
+
 = 1.1 (2016-03-19) =
 Highlights:
 * This release largely consists of minor behind-the-scenes changes.
