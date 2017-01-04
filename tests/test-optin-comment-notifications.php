@@ -193,12 +193,14 @@ class Optin_Comment_Notifications_Test extends WP_UnitTestCase {
 
 	public function test_default_capability_is_true_for_low_privilege_user() {
 		$user_id = $this->create_user( 'test@example.com', false, 'subscriber' );
+		wp_set_current_user( $user_id );
 
 		$this->assertTrue( user_can( $user_id, c2c_Optin_Comment_Notifications::$cap_name ) );
 	}
 
 	public function test_filter_allows_customizing_capability() {
 		$user_id = $this->create_user( 'test@example.com', false, 'subscriber' );
+		wp_set_current_user( $user_id );
 
 		add_filter( 'c2c_optin_comment_notifications_has_cap', array( $this, 'restrict_capability' ), 10, 2 );
 
