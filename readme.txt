@@ -4,8 +4,8 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: comment, comments, notifications, email, commenting, coffee2code
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
-Requires at least: 4.1
-Tested up to: 4.4
+Requires at least: 4.6
+Tested up to: 4.7
 Stable tag: 1.1
 
 Allows users to opt into receiving a notification email whenever a comment is made to the site.
@@ -85,6 +85,8 @@ Yes. Users with the 'edit_users' capability (administrators, basically) and can 
     * Hook 'edit_user_profile_update' to potentially save the setting when another user is being edited
 * Change: Enable more error output for unit tests.
 * Change: Default `WP_TESTS_DIR` to `/tmp/wordpress-tests-lib` rather than erroring out if not defined via environment variable.
+* Change: Note compatibility through WP 4.7+.
+* Change: Remove support for WordPress older than 4.6 (should still work for earlier versions)
 * Change: Update copyright date (2017).
 
 = 1.1 (2016-03-19) =
