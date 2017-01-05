@@ -85,6 +85,7 @@ Yes. Users with the 'edit_users' capability (administrators, basically) and can 
     * Hook 'edit_user_profile_update' to potentially save the setting when another user is being edited
 * Change: Enable more error output for unit tests.
 * Change: Default `WP_TESTS_DIR` to `/tmp/wordpress-tests-lib` rather than erroring out if not defined via environment variable.
+* Change: Update copyright date (2017).
 
 = 1.1 (2016-03-19) =
 Highlights:
