@@ -71,6 +71,14 @@ class c2c_Optin_Comment_Notifications {
 	public static $cap_name = 'c2c_subscribe_to_all_comments';
 
 	/**
+	 * Name for capability that permits user to edit setting to subscribe to all comments for other users.
+	 *
+	 * @var string
+	 * @access public
+	 */
+	public static $cap_edit_others = 'c2c_subscribe_to_all_comments_edit_others';
+
+	/**
 	 * Returns version of the plugin.
 	 *
 	 * @since 1.0
@@ -105,10 +113,11 @@ class c2c_Optin_Comment_Notifications {
 		add_filter( 'comment_moderation_recipients',   array( __CLASS__, 'add_comment_notification_recipients' ), 10, 2 );
 
 		// Adds the checkbox to user profiles.
-		add_action( 'profile_personal_options',        array( __CLASS__, 'add_comment_notification_checkbox' ) );
+		add_action( 'personal_options',                array( __CLASS__, 'add_comment_notification_checkbox' ) );
 
 		// Saves the user preference for comment notifications.
 		add_action( 'personal_options_update',         array( __CLASS__, 'option_save' ) );
+		add_action( 'edit_user_profile_update',        array( __CLASS__, 'option_save' ) );
 	}
 
 	/**
@@ -133,6 +142,21 @@ class c2c_Optin_Comment_Notifications {
 		 * @param array $caps    Array of user capabilities.
 		 */
 		$caps[ self::$cap_name ] = apply_filters( 'c2c_optin_comment_notifications_has_cap', true, $caps );
+
+
+		remove_filter( 'user_has_cap', array( __CLASS__, 'assign_subscribe_caps' ) );
+		$can_edit_others = current_user_can( 'edit_users' );
+		add_filter( 'user_has_cap', array( __CLASS__, 'assign_subscribe_caps' ) );
+
+		/**
+		 * Filter the capability determining if user can edit comment notifications setting for other users.
+		 *
+		 * @since 1.2
+		 *
+		 * @param bool  $default The default. True if current user has 'edit_users' capability..
+		 * @param array $caps    Array of user capabilities.
+		 */
+		$caps[ self::$cap_edit_others ] = apply_filters( 'c2c_optin_comment_notifications_has_cap_edit_others', $can_edit_others, $caps );
 
 		return $caps;
 	}
@@ -187,30 +211,39 @@ class c2c_Optin_Comment_Notifications {
 	}
 
 	/**
-	 * Adds the checkbox to user profiles to allow them to opt into receiving
+	 * Adds the checkbox to user profiles to allow user to opt into receiving
 	 * notifications for all comments.
 	 *
 	 * @access public
+	 *
+	 * @param WP_User $profileuser The WP_User object of the profile being viewed.
 	 */
-	public static function add_comment_notification_checkbox() {
-		if ( ! current_user_can( self::$cap_name ) ) {
+	public static function add_comment_notification_checkbox( $profileuser ) {
+		$current_user = wp_get_current_user();
+		$is_profile_page = ( $profileuser->ID == $current_user->ID );
+
+		$cap_to_check = $is_profile_page ? self::$cap_name : self::$cap_edit_others;
+		if ( ! current_user_can( $cap_to_check ) ) {
 			return;
 		}
-
-		$checked = checked( get_user_option( self::$option_name ), self::$yes_option_value, false );
-
 		?>
-		<table class="form-table">
 		<tr>
 			<th scope="row"><?php _e( 'New Comment Emails', 'optin-comment-notifications' ); ?></th>
 			<td>
 				<label for="<?php echo esc_attr( self::$option_name ); ?>">
-					<input name="<?php echo esc_attr( self::$option_name ); ?>" type="checkbox" id="<?php echo esc_attr( self::$option_name ); ?>" value="<?php echo esc_attr( self::$yes_option_value ); ?>"<?php echo $checked; ?> />
-					<?php _e( 'Email me whenever a comment is submitted to the site.', 'optin-comment-notifications' ); ?>
+					<?php printf(
+						'<input name="%s" type="checkbox" id="%s" value="%s" %s />',
+						esc_attr( self::$option_name ),
+						esc_attr( self::$option_name ),
+						esc_attr( self::$yes_option_value ),
+						checked( get_user_option( self::$option_name, $profileuser->ID ), self::$yes_option_value, false )
+					); ?>
+					<?php $is_profile_page ?
+						_e( 'Email me whenever a comment is submitted to the site.', 'optin-comment-notifications' ) :
+						_e( 'Email this user whenever a comment is submitted to the site.', 'optin-comment-notifications' ); ?>
 				</label>
 			</td>
 		</tr>
-		</table>
 		<?php
 	}
 

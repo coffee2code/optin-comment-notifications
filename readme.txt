@@ -70,9 +70,19 @@ function restrict_optin_comment_notifications( $default, $caps ) {
 add_filter( 'c2c_optin_comment_notifications_has_cap', 'restrict_optin_comment_notifications', 10, 2 );
 `
 
+= Can an administrator configure the setting for another user? =
+
+Yes. Users with the 'edit_users' capability (administrators, basically) and can edit the profile of another user can configure this plugin for that user. The checkbox is labeled "Email this user whenever a comment is submitted to the site.".
+
+
 == Changelog ==
 
 = () =
+* New: Permit admins (or more specifically, those who can 'edit_users') to control the setting for other users.
+    * Add new capability 'c2c_subscribe_to_all_comments_edit_others'
+    * Add 'c2c_optin_comment_notifications_has_cap_edit_others' filter to allow customizing capability for editing setting for other users
+    * Show checkbox via 'personal_options' action instead of 'profile_personal_options'
+    * Hook 'edit_user_profile_update' to potentially save the setting when another user is being edited
 * Change: Enable more error output for unit tests.
 * Change: Default `WP_TESTS_DIR` to `/tmp/wordpress-tests-lib` rather than erroring out if not defined via environment variable.
 

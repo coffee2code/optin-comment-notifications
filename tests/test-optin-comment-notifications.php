@@ -7,8 +7,10 @@ class Optin_Comment_Notifications_Test extends WP_UnitTestCase {
 	public function tearDown() {
 		parent::tearDown();
 		$this->unset_current_user();
-		// Ensure the filter gets removed
+
+		// Ensure the filters get removed
 		remove_filter( 'c2c_optin_comment_notifications_has_cap', array( $this, 'restrict_capability' ), 10, 2 );
+		remove_filter( 'c2c_optin_comment_notifications_has_cap_edit_others', array( $this, 'restrict_capability' ), 10, 2 );
 	}
 
 
@@ -47,7 +49,7 @@ class Optin_Comment_Notifications_Test extends WP_UnitTestCase {
 
 
 	public function restrict_capability( $default, $caps ) {
-		// Only administrators and editors can subscribe to all comments.
+		// Only allow administrators and editors.
 		return !! array_intersect(
 			(array) wp_get_current_user()->roles, // Get current user's roles.
 			array( 'administrator', 'editor' )
@@ -151,12 +153,12 @@ class Optin_Comment_Notifications_Test extends WP_UnitTestCase {
 		$this->assertEquals( $emails, apply_filters( 'comment_notification_recipients', $emails, $comment_id ) );
 	}
 
-	public function test_checkbox_is_output_for_low_privilege_user( $value = false ) {
+	public function test_checkbox_is_output_for_low_privilege_user( $value = false, $current_user_id = false ) {
 		$user_id = $this->create_user( 'test@example.com', $value, 'subscriber' );
-		wp_set_current_user( $user_id );
+		wp_set_current_user( $current_user_id ? $current_user_id : $user_id );
 
 		ob_start();
-		c2c_Optin_Comment_Notifications::add_comment_notification_checkbox();
+		c2c_Optin_Comment_Notifications::add_comment_notification_checkbox( get_user_by( 'ID', $user_id ) );
 		$output = ob_get_contents();
 		ob_end_clean();
 
@@ -178,13 +180,36 @@ class Optin_Comment_Notifications_Test extends WP_UnitTestCase {
 		$this->assertNotRegExp( '/checked=\'checked\'/', $output );
 	}
 
+	public function test_checkbox_label_says_me_for_current_user_profile() {
+		$output = $this->test_checkbox_is_output_for_low_privilege_user( true );
+
+		$this->assertRegExp( '/Email me whenever/', $output );
+	}
+
+	public function test_checkbox_for_other_user_is_output_for_privileged_user() {
+		$user_id = $this->create_user( 'admin@example.com', true, 'administrator' );
+
+		$output = $this->test_checkbox_is_output_for_low_privilege_user( true, $user_id );
+
+		$this->assertNotEmpty( $output );
+
+		// For use in another test
+		return $output;
+	}
+
+	public function test_checkbox_label_says_this_user_for_other_user_profile() {
+		$output = $this->test_checkbox_for_other_user_is_output_for_privileged_user();
+
+		$this->assertRegExp( '/Email this user whenever/', $output );
+	}
+
 	public function test_checkbox_not_output_if_user_not_capable() {
 		$user_id = $this->create_user( 'test@example.com', false, 'subscriber' );
 		wp_set_current_user( $user_id );
 		add_filter( 'c2c_optin_comment_notifications_has_cap', array( $this, 'restrict_capability' ), 10, 2 );
 
 		ob_start();
-		c2c_Optin_Comment_Notifications::add_comment_notification_checkbox();
+		c2c_Optin_Comment_Notifications::add_comment_notification_checkbox( wp_get_current_user() );
 		$output = ob_get_contents();
 		ob_end_clean();
 
@@ -205,6 +230,22 @@ class Optin_Comment_Notifications_Test extends WP_UnitTestCase {
 		add_filter( 'c2c_optin_comment_notifications_has_cap', array( $this, 'restrict_capability' ), 10, 2 );
 
 		$this->assertFalse( user_can( $user_id, c2c_Optin_Comment_Notifications::$cap_name ) );
+	}
+
+	public function test_default_capability_to_edit_setting_for_others_is_false_for_low_privilege_user() {
+		$user_id = $this->create_user( 'test@example.com', false, 'editor' );
+		wp_set_current_user( $user_id );
+
+		$this->assertFalse( user_can( $user_id, c2c_Optin_Comment_Notifications::$cap_edit_others ) );
+	}
+
+	public function test_filter_allows_customizing_capability_to_edit_setting_for_others() {
+		$user_id = $this->create_user( 'test@example.com', false, 'editor' );
+		wp_set_current_user( $user_id );
+
+		add_filter( 'c2c_optin_comment_notifications_has_cap_edit_others', array( $this, 'restrict_capability' ), 10, 2 );
+
+		$this->assertTrue( user_can( $user_id, c2c_Optin_Comment_Notifications::$cap_edit_others ) );
 	}
 
 }
