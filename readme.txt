@@ -6,7 +6,7 @@ License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Requires at least: 4.6
 Tested up to: 4.7
-Stable tag: 1.1
+Stable tag: 1.2
 
 Allows users to opt into receiving a notification email whenever a comment is made to the site.
 
@@ -40,7 +40,7 @@ Links: [Plugin Homepage](http://coffee2code.com/wp-plugins/optin-comment-notific
 
 Any user account on the site can sign up for comment notifications. Comments that go into moderation will only trigger notifications to users who can moderate comments. Visitors who do not have an account on the site cannot make use of the plugin to subscribe to comments.
 
-= How does I sign up to receive notifications? =
+= How do I sign up to receive notifications? =
 
 On your profile page, there is a checkbox next to "New Comment Emails" that is labeled "Email me whenever a comment is submitted to the site.". Check the checkbox and click the button to update your profile. If you wish to discontinue receiving such notifications, simply uncheck the checkbox and save the change.
 
@@ -77,7 +77,7 @@ Yes. Users with the 'edit_users' capability (administrators, basically) and can 
 
 == Changelog ==
 
-= () =
+= 1.2 (2017-01-04) =
 * New: Permit admins (or more specifically, those who can 'edit_users') to control the setting for other users.
     * Add new capability 'c2c_subscribe_to_all_comments_edit_others'
     * Add 'c2c_optin_comment_notifications_has_cap_edit_others' filter to allow customizing capability for editing setting for other users
@@ -85,6 +85,7 @@ Yes. Users with the 'edit_users' capability (administrators, basically) and can 
     * Hook 'edit_user_profile_update' to potentially save the setting when another user is being edited
 * Change: Enable more error output for unit tests.
 * Change: Default `WP_TESTS_DIR` to `/tmp/wordpress-tests-lib` rather than erroring out if not defined via environment variable.
+* Change: Minor tweaks to code documentation.
 * Change: Note compatibility through WP 4.7+.
 * Change: Remove support for WordPress older than 4.6 (should still work for earlier versions)
 * Change: Update copyright date (2017).
@@ -127,6 +128,9 @@ Details:
 * Initial release as theme-packaged plugin on developer.wordpress.org
 
 == Upgrade Notice ==
+
+= 1.2 =
+Minor feature update: added ability for admins to edit the setting for other users, updated unit test bootstrap file, noted compatibility through WP 4.7+, and updated copyright date (2017)
 
 = 1.1 =
 Minor update: improve support for localization; verified compatibility through WP 4.4; removed compatibility with WP earlier than 4.1; updated copyright date (2016)
