@@ -77,6 +77,9 @@ Yes. Users with the 'edit_users' capability (administrators, basically) and can 
 
 == Changelog ==
 
+= () =
+* Change: Update copyright date (2018)
+
 = 1.2 (2017-01-04) =
 * New: Permit admins (or more specifically, those who can 'edit_users') to control the setting for other users.
     * Add new capability 'c2c_subscribe_to_all_comments_edit_others'
