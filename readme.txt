@@ -79,6 +79,8 @@ Yes. Users with the 'edit_users' capability (administrators, basically) and can 
 
 = () =
 * Change: Add GitHub link to readme
+* Unit tests:
+    * Change: Use correct header @package name in bootstrap
 * Change: Note compatibility through WP 4.9+
 * Change: Update copyright date (2018)
 

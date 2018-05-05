@@ -2,7 +2,7 @@
 /**
  * PHPUnit bootstrap file
  *
- * @package wpuntexturize
+ * @package Optin_Comment_Notifications
  */
 
 ini_set('display_errors','on');
