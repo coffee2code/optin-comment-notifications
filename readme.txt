@@ -5,7 +5,7 @@ Tags: comment, comments, notifications, email, commenting, coffee2code
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Requires at least: 4.6
-Tested up to: 4.7
+Tested up to: 4.9
 Stable tag: 1.2
 
 Allows users to opt into receiving a notification email whenever a comment is made to the site.
@@ -78,6 +78,7 @@ Yes. Users with the 'edit_users' capability (administrators, basically) and can 
 == Changelog ==
 
 = () =
+* Change: Note compatibility through WP 4.9+
 * Change: Update copyright date (2018)
 
 = 1.2 (2017-01-04) =
