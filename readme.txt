@@ -100,9 +100,11 @@ Yes. Users with the 'edit_users' capability (administrators, basically) and can 
 
 = 1.1 (2016-03-19) =
 Highlights:
+
 * This release largely consists of minor behind-the-scenes changes.
 
 Details:
+
 * Bugfix: Don't use translation functions to output strings not needing translation.
 * Change: Add support for language packs:
     * Don't load textdomain from file.
