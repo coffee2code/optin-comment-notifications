@@ -20,7 +20,7 @@ By default, all users of the site have the ability to subscribe to notifications
 
 Note: a "user" is a person with an actual login account for the site. The plugin does not facilitate permitting visitors who do not have an account on the site to be able to subscribe to all comments.
 
-Links: [Plugin Homepage](http://coffee2code.com/wp-plugins/optin-comment-notifications/) | [Plugin Directory Page](https://wordpress.org/plugins/optin-comment-notifications/) | [Author Homepage](http://coffee2code.com)
+Links: [Plugin Homepage](http://coffee2code.com/wp-plugins/optin-comment-notifications/) | [Plugin Directory Page](https://wordpress.org/plugins/optin-comment-notifications/) | [GitHub](https://github.com/coffee2code/optin-comment-notifications/) | [Author Homepage](http://coffee2code.com)
 
 
 == Installation ==
@@ -78,6 +78,7 @@ Yes. Users with the 'edit_users' capability (administrators, basically) and can 
 == Changelog ==
 
 = () =
+* Change: Add GitHub link to readme
 * Change: Note compatibility through WP 4.9+
 * Change: Update copyright date (2018)
 
