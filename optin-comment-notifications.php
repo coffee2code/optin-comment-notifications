@@ -180,7 +180,7 @@ class c2c_Optin_Comment_Notifications {
 		$blog_prefix = $wpdb->get_blog_prefix( get_current_blog_id() );
 		$user_query = new WP_User_Query( array(
 			'meta_key'   => $blog_prefix . self::$option_name,
-			'meta_value' => self::$yes_option_value
+			'meta_value' => self::$yes_option_value,
 		) );
 
 		if ( ! empty( $user_query->results ) ) {
