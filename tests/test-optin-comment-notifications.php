@@ -190,16 +190,32 @@ class Optin_Comment_Notifications_Test extends WP_UnitTestCase {
 		$this->assertEquals( array( $email ), apply_filters( 'comment_notification_recipients', $emails, $comment_id ) );
 	}
 
-	public function test_verify_existing_notification_email_addresses_are_dropped_when_moderator_notify_is_false() {
+	public function test_verify_existing_notification_email_addresses_are_dropped_when_notify_moderator_is_false() {
 		$post_id    = $this->factory->post->create();
-		$email      = 'subscriber@example.com';
+		$email      = 'admin@example.com';
 		$emails     = array( 'a@example.com', 'b@example.com' );
-		$user_id    = $this->create_user( $email, false, 'subscriber' );
+		$user_id    = $this->create_user( $email, false, 'administrator' );
 		$comment_id = $this->factory->comment->create( array( 'comment_approved' => '0' ) );
-		// Simulate hooked function being invoked during check for value of 'moderator_notify'.
-		c2c_Optin_Comment_Notifications::notify_moderator( true, $comment_id );
 
-		$this->assertEquals( array(), apply_filters( 'comment_notification_recipients', $emails, $comment_id ) );
+		update_option( 'admin_email', $email );
+		update_option( 'notify_moderator', false );
+		wp_new_comment_notify_moderator( $comment_id );
+
+		$this->assertEquals( array(), apply_filters( 'comment_moderation_recipients', $emails, $comment_id ) );
+	}
+
+	public function test_verify_existing_notification_email_addresses_are_not_dropped_when_notify_moderator_is_true() {
+		$post_id    = $this->factory->post->create();
+		$email      = 'admin@example.com';
+		$emails     = array( $email, 'a@example.com', 'b@example.com' );
+		$user_id    = $this->create_user( $email, false, 'administrator' );
+		$comment_id = $this->factory->comment->create( array( 'comment_approved' => '0' ) );
+
+		update_option( 'admin_email', $email );
+		update_option( 'notify_moderator', true );
+		wp_new_comment_notify_moderator( $comment_id );
+
+		$this->assertEquals( $emails, apply_filters( 'comment_moderation_recipients', $emails, $comment_id ) );
 	}
 
 	public function test_checkbox_is_output_for_low_privilege_user( $value = false, $current_user_id = false ) {
