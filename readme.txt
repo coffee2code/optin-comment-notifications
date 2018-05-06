@@ -25,7 +25,7 @@ Links: [Plugin Homepage](http://coffee2code.com/wp-plugins/optin-comment-notific
 
 == Installation ==
 
-1. Unzip `optin-comment-notifications.zip` inside the plugins directory for your site (typically `/wp-content/plugins/`). Or install via the built-in WordPress plugin installer)
+1. Install via the built-in WordPress plugin installer. Or download and unzip `optin-comment-notifications.zip` inside the plugins directory for your site (typically `wp-content/plugins/`)
 2. Activate the plugin through the 'Plugins' admin menu in WordPress
 3. Users wishing to opt into receiving notifications for new comments should visit their profile page and check the checkbox labeled "Email me whenever a comment is submitted to the site."
 
@@ -100,6 +100,7 @@ Yes. Users with the 'edit_users' capability (administrators, basically) and can 
 * Change: Note compatibility through WP 4.7+.
 * Change: Remove support for WordPress older than 4.6 (should still work for earlier versions)
 * Change: Update copyright date (2017).
+* Change: Update installation instruction to prefer built-in installer over .zip file
 
 = 1.1 (2016-03-19) =
 Highlights:
