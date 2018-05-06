@@ -73,6 +73,8 @@ class Optin_Comment_Notifications_Test extends WP_UnitTestCase {
 		$email      = 'admin@example.com';
 		$user_id    = $this->create_user( $email, true, 'administrator' );
 		$comment_id = $this->factory->comment->create( array( 'comment_approved' => '1' ) );
+		// Simulate hooked function being invoked during check for value of 'comments_notify'.
+		c2c_Optin_Comment_Notifications::notify_post_author( true, $comment_id );
 
 		$this->assertEquals( array( $email ), apply_filters( 'comment_notification_recipients', array(), $comment_id ) );
 	}
@@ -82,6 +84,8 @@ class Optin_Comment_Notifications_Test extends WP_UnitTestCase {
 		$email      = 'admin@example.com';
 		$user_id    = $this->create_user( $email, false, 'administrator' );
 		$comment_id = $this->factory->comment->create( array( 'comment_approved' => '1' ) );
+		// Simulate hooked function being invoked during check for value of 'comments_notify'.
+		c2c_Optin_Comment_Notifications::notify_post_author( true, $comment_id );
 
 		$this->assertEmpty( apply_filters( 'comment_notification_recipients', array(), $comment_id ) );
 	}
@@ -100,6 +104,8 @@ class Optin_Comment_Notifications_Test extends WP_UnitTestCase {
 		$email      = 'admin@example.com';
 		$user_id    = $this->create_user( $email, true, 'administrator' );
 		$comment_id = $this->factory->comment->create( array( 'comment_approved' => '0' ) );
+		// Simulate hooked function being invoked during check for value of 'comments_notify'.
+		c2c_Optin_Comment_Notifications::notify_moderator( true, $comment_id );
 
 		$this->assertEquals( array( $email ), apply_filters( 'comment_moderation_recipients', array(), $comment_id ) );
 	}
@@ -109,6 +115,8 @@ class Optin_Comment_Notifications_Test extends WP_UnitTestCase {
 		$email      = 'subscriber@example.com';
 		$user_id    = $this->create_user( $email, true, 'subscriber' );
 		$comment_id = $this->factory->comment->create( array( 'comment_approved' => '0' ) );
+		// Simulate hooked function being invoked during check for value of 'comments_notify'.
+		c2c_Optin_Comment_Notifications::notify_moderator( true, $comment_id );
 
 		$this->assertEmpty( apply_filters( 'comment_moderation_recipients', array(), $comment_id ) );
 	}
@@ -139,6 +147,8 @@ class Optin_Comment_Notifications_Test extends WP_UnitTestCase {
 		$emails     = array( 'a@example.com', 'b@example.com' );
 		$user_id    = $this->create_user( $email, true, 'administrator' );
 		$comment_id = $this->factory->comment->create( array( 'comment_approved' => '1' ) );
+		// Simulate hooked function being invoked during check for value of 'comments_notify'.
+		c2c_Optin_Comment_Notifications::notify_post_author( true, $comment_id );
 
 		$this->assertEquals( array_merge( $emails, array( $email ) ), apply_filters( 'comment_notification_recipients', $emails, $comment_id ) );
 	}
@@ -148,9 +158,35 @@ class Optin_Comment_Notifications_Test extends WP_UnitTestCase {
 		$email      = 'subscriber@example.com';
 		$emails     = array( 'a@example.com', 'b@example.com' );
 		$user_id    = $this->create_user( $email, false, 'subscriber' );
-		$comment_id = $this->factory->comment->create( array( 'comment_approved' => '1' ) );
+		$comment_id = $this->factory->comment->create( array( 'comment_approved' => '0' ) );
+		// Simulate hooked function being invoked during check for value of 'moderator_notify'.
+		c2c_Optin_Comment_Notifications::notify_moderator( true, $comment_id );
 
 		$this->assertEquals( $emails, apply_filters( 'comment_notification_recipients', $emails, $comment_id ) );
+	}
+
+	public function test_verify_existing_notification_email_addresses_are_dropped_when_comments_notify_is_false() {
+		$post_id    = $this->factory->post->create();
+		$email      = 'admin@example.com';
+		$emails     = array( 'a@example.com', 'b@example.com' );
+		$user_id    = $this->create_user( $email, true, 'administrator' );
+		$comment_id = $this->factory->comment->create( array( 'comment_approved' => '1' ) );
+		// Simulate hooked function being invoked during check for value of 'comments_notify'.
+		c2c_Optin_Comment_Notifications::notify_post_author( false, $comment_id );
+
+		$this->assertEquals( array( $email ), apply_filters( 'comment_notification_recipients', $emails, $comment_id ) );
+	}
+
+	public function test_verify_existing_notification_email_addresses_are_dropped_when_moderator_notify_is_false() {
+		$post_id    = $this->factory->post->create();
+		$email      = 'subscriber@example.com';
+		$emails     = array( 'a@example.com', 'b@example.com' );
+		$user_id    = $this->create_user( $email, false, 'subscriber' );
+		$comment_id = $this->factory->comment->create( array( 'comment_approved' => '0' ) );
+		// Simulate hooked function being invoked during check for value of 'moderator_notify'.
+		c2c_Optin_Comment_Notifications::notify_moderator( true, $comment_id );
+
+		$this->assertEquals( array(), apply_filters( 'comment_notification_recipients', $emails, $comment_id ) );
 	}
 
 	public function test_checkbox_is_output_for_low_privilege_user( $value = false, $current_user_id = false ) {

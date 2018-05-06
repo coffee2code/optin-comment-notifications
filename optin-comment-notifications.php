@@ -79,6 +79,22 @@ class c2c_Optin_Comment_Notifications {
 	public static $cap_edit_others = 'c2c_subscribe_to_all_comments_edit_others';
 
 	/**
+	 * Original value passed to 'notify_post_author' filter.
+	 *
+	 * @since 1.3
+	 * @var bool|null
+	 */
+	private static $orig_notify_post_author = null;
+
+	/**
+	 * Original value passed to 'notify_moderator' filter.
+	 *
+	 * @since 1.3
+	 * @var bool|null
+	 */
+	private static $orig_notify_moderator = null;
+
+	/**
 	 * Returns version of the plugin.
 	 *
 	 * @since 1.0
@@ -107,6 +123,10 @@ class c2c_Optin_Comment_Notifications {
 
 		// Restrict ability to subscribe to comments.
 		add_filter( 'user_has_cap',                    array( __CLASS__, 'assign_subscribe_caps' ) );
+
+		// Ensure notification emails can be sent in the first place.
+		add_filter( 'notify_post_author',              array( __CLASS__, 'notify_post_author' ), 10, 2 );
+		add_filter( 'notify_moderator',                array( __CLASS__, 'notify_moderator' ), 10, 2 );
 
 		// Add users who opted to be notified.
 		add_filter( 'comment_notification_recipients', array( __CLASS__, 'add_comment_notification_recipients' ), 10, 2 );
@@ -162,6 +182,56 @@ class c2c_Optin_Comment_Notifications {
 	}
 
 	/**
+	 * Ensure that comment notifications are sent in the first place.
+	 *
+	 * The plugin basically amends 'comment_notification_recipients' to add more
+	 * email addresses to the list notified of new comments. However, WP never
+	 * gets that far if 'comments_notify' setting is not checked. Since the plugin
+	 * should work regardless of that setting, it should filter its value to be
+	 * true. It also needs to retain the original value to potentially remove post
+	 * authors who haven't opted into comment notifications to be excluded (honor
+	 * the core setting).
+	 *
+	 * @since 1.3
+	 *
+	 * @param bool $maybe_notify Should comment notifications be sent? Based on 'comments_notify' setting.
+	 * @param int  $comment_id   The comment ID.
+	 * @return bool Always true.
+	 */
+	public static function notify_post_author( $maybe_notify, $comment_id ) {
+		// Maybe note of the original value so the post author can potentially be
+		// omitted from the email list.
+		self::$orig_notify_post_author = $maybe_notify;
+
+		return true;
+	}
+
+	/**
+	 * Ensure that moderation notifications are sent in the first place.
+	 *
+	 * The plugin basically amends 'comment_moderation_recipients' to add more
+	 * email addresses to the list notified of new comments. However, WP never
+	 * gets that far if 'moderation_notify' setting is not checked. Since the
+	 * plugin should work regardless of that setting, it should filter its value
+	 * to be true. It also needs to retain the original value to potentially remove
+	 * moderators who haven't opted into comment notifications to be excluded
+	 * (honor the core setting).
+	 *
+	 * @since 1.3
+	 *
+	 * @param bool $maybe_notify Should moderation notifications be sent? Based on 'moderation_notify' setting.
+	 * @param int  $comment_id   The comment ID.
+	 * @return bool Always true.
+	 */
+	public static function notify_moderator( $maybe_notify, $comment_id ) {
+		// Maybe note of the original value so the moderators can potentially be
+		// omitted from the email list.
+		self::$orig_notify_moderator = $maybe_notify;
+
+		return true;
+	}
+
+	/**
 	 * Adds users who opted to be notified.
 	 *
 	 * @access public
@@ -175,6 +245,16 @@ class c2c_Optin_Comment_Notifications {
 
 		// Get the comment.
 		$comment = get_comment( $comment_id );
+
+		// If the site has 'comments_notify' or 'moderation_notify' set to false, the
+		// originally intended recipients can be removed from the email list.
+		if ( false === self::$orig_notify_post_author || false === self::$orig_notify_moderator ) {
+			// While it is possible $emails has been been filtered by other plugins and
+			// contains more than just the core generated list of email address, they
+			// aren't expecting to run in this situation, so can be discarded and only
+			// users opted in via this plugin can be emailed.
+			$emails = array();
+		}
 
 		// Get users who opted in to comment notifications.
 		$blog_prefix = $wpdb->get_blog_prefix( get_current_blog_id() );
