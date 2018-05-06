@@ -246,6 +246,11 @@ class c2c_Optin_Comment_Notifications {
 		// Get the comment.
 		$comment = get_comment( $comment_id );
 
+		// Don't notify users about spam.
+		if ( 'spam' === $comment->comment_approved ) {
+			return $emails;
+		}
+
 		// If the site has 'comments_notify' or 'moderation_notify' set to false, the
 		// originally intended recipients can be removed from the email list.
 		if ( false === self::$orig_notify_post_author || false === self::$orig_notify_moderator ) {

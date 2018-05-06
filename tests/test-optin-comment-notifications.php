@@ -132,6 +132,17 @@ class Optin_Comment_Notifications_Test extends WP_UnitTestCase {
 		$this->assertEmpty( apply_filters( 'comment_moderation_recipients', array(), $comment_id ) );
 	}
 
+	public function test_opted_in_user_is_not_notified_about_spam_comment() {
+		$post_id    = $this->factory->post->create();
+		$email      = 'admin@example.com';
+		$user_id    = $this->create_user( $email, true, 'subscriber' );
+		$comment_id = $this->factory->comment->create( array( 'comment_approved' => 'spam' ) );
+
+		wp_new_comment_notify_moderator( $comment_id );
+
+		$this->assertEmpty( apply_filters( 'comment_notification_recipients', array(), $comment_id ) );
+	}
+
 	public function test_user_is_not_double_notified() {
 		$post_id    = $this->factory->post->create();
 		$email      = 'admin@example.com';

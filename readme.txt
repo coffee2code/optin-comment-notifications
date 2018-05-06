@@ -80,6 +80,7 @@ Yes. Users with the 'edit_users' capability (administrators, basically) and can 
 
 = () =
 * Bugfix: Ensure comment notifications are sent even if core's 'comments_notify' or 'notify_moderator' settings is false
+* Change: Don't notify users of spam comments
 * New: Add README.md
 * Change: Add GitHub link to readme
 * Unit tests:
