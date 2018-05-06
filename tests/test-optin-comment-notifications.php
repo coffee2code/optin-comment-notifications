@@ -198,7 +198,7 @@ class Optin_Comment_Notifications_Test extends WP_UnitTestCase {
 		$comment_id = $this->factory->comment->create( array( 'comment_approved' => '0' ) );
 
 		update_option( 'admin_email', $email );
-		update_option( 'notify_moderator', false );
+		update_option( 'moderation_notify', false );
 		wp_new_comment_notify_moderator( $comment_id );
 
 		$this->assertEquals( array(), apply_filters( 'comment_moderation_recipients', $emails, $comment_id ) );
@@ -212,7 +212,7 @@ class Optin_Comment_Notifications_Test extends WP_UnitTestCase {
 		$comment_id = $this->factory->comment->create( array( 'comment_approved' => '0' ) );
 
 		update_option( 'admin_email', $email );
-		update_option( 'notify_moderator', true );
+		update_option( 'moderation_notify', true );
 		wp_new_comment_notify_moderator( $comment_id );
 
 		$this->assertEquals( $emails, apply_filters( 'comment_moderation_recipients', $emails, $comment_id ) );
