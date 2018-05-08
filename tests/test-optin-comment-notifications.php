@@ -75,6 +75,7 @@ class Optin_Comment_Notifications_Test extends WP_UnitTestCase {
 		$comment_id = $this->factory->comment->create( array( 'comment_approved' => '1' ) );
 
 		wp_new_comment_notify_postauthor( $comment_id );
+		apply_filters( 'notify_post_author', true, $comment_id );
 
 		$this->assertEquals( array( $email ), apply_filters( 'comment_notification_recipients', array(), $comment_id ) );
 	}
@@ -86,6 +87,7 @@ class Optin_Comment_Notifications_Test extends WP_UnitTestCase {
 		$comment_id = $this->factory->comment->create( array( 'comment_approved' => '1' ) );
 
 		wp_new_comment_notify_postauthor( $comment_id );
+		apply_filters( 'notify_post_author', true, $comment_id );
 
 		$this->assertEmpty( apply_filters( 'comment_notification_recipients', array(), $comment_id ) );
 	}
@@ -95,6 +97,8 @@ class Optin_Comment_Notifications_Test extends WP_UnitTestCase {
 		$email      = 'admin@example.com';
 		$user_id    = $this->create_user( $email, true, 'administrator' );
 		$comment_id = $this->factory->comment->create( array( 'user_id' => $user_id, 'comment_approved' => '1' ) );
+
+		apply_filters( 'notify_post_author', true, $comment_id );
 
 		$this->assertEmpty( apply_filters( 'comment_notification_recipients', array(), $comment_id ) );
 	}
@@ -106,6 +110,7 @@ class Optin_Comment_Notifications_Test extends WP_UnitTestCase {
 		$comment_id = $this->factory->comment->create( array( 'comment_approved' => '0' ) );
 
 		wp_new_comment_notify_moderator( $comment_id );
+		apply_filters( 'notify_moderator', true, $comment_id );
 
 		$this->assertEquals( array( $email ), apply_filters( 'comment_moderation_recipients', array(), $comment_id ) );
 	}
@@ -117,6 +122,7 @@ class Optin_Comment_Notifications_Test extends WP_UnitTestCase {
 		$comment_id = $this->factory->comment->create( array( 'comment_approved' => '0' ) );
 
 		wp_new_comment_notify_moderator( $comment_id );
+		apply_filters( 'notify_moderator', true, $comment_id );
 
 		$this->assertEmpty( apply_filters( 'comment_moderation_recipients', array(), $comment_id ) );
 	}
@@ -139,6 +145,7 @@ class Optin_Comment_Notifications_Test extends WP_UnitTestCase {
 		$comment_id = $this->factory->comment->create( array( 'comment_approved' => 'spam' ) );
 
 		wp_new_comment_notify_postauthor( $comment_id );
+		apply_filters( 'notify_post_author', true, $comment_id );
 
 		$this->assertEmpty( apply_filters( 'comment_notification_recipients', array(), $comment_id ) );
 	}
@@ -148,6 +155,8 @@ class Optin_Comment_Notifications_Test extends WP_UnitTestCase {
 		$email      = 'admin@example.com';
 		$user_id    = $this->create_user( $email, true, 'administrator' );
 		$comment_id = $this->factory->comment->create( array( 'comment_approved' => '1' ) );
+
+		apply_filters( 'notify_post_author', true, $comment_id );
 
 		$this->assertEquals( array( $email ), apply_filters( 'comment_notification_recipients', array( $email ), $comment_id ) );
 	}
@@ -160,6 +169,7 @@ class Optin_Comment_Notifications_Test extends WP_UnitTestCase {
 		$comment_id = $this->factory->comment->create( array( 'comment_approved' => '1' ) );
 
 		wp_new_comment_notify_postauthor( $comment_id );
+		apply_filters( 'notify_post_author', true, $comment_id );
 
 		$this->assertEquals( array_merge( $emails, array( $email ) ), apply_filters( 'comment_notification_recipients', $emails, $comment_id ) );
 	}
@@ -173,6 +183,7 @@ class Optin_Comment_Notifications_Test extends WP_UnitTestCase {
 
 		update_option( 'comments_notify', true );
 		wp_new_comment_notify_postauthor( $comment_id );
+		apply_filters( 'notify_post_author', true, $comment_id );
 
 		$this->assertEquals( $emails, apply_filters( 'comment_notification_recipients', $emails, $comment_id ) );
 	}
@@ -186,6 +197,7 @@ class Optin_Comment_Notifications_Test extends WP_UnitTestCase {
 
 		update_option( 'comments_notify', false );
 		wp_new_comment_notify_postauthor( $comment_id );
+		apply_filters( 'notify_post_author', false, $comment_id );
 
 		$this->assertEquals( array( $email ), apply_filters( 'comment_notification_recipients', $emails, $comment_id ) );
 	}
@@ -200,6 +212,7 @@ class Optin_Comment_Notifications_Test extends WP_UnitTestCase {
 		update_option( 'admin_email', $email );
 		update_option( 'moderation_notify', false );
 		wp_new_comment_notify_moderator( $comment_id );
+		apply_filters( 'notify_moderator', false, $comment_id );
 
 		$this->assertEquals( array(), apply_filters( 'comment_moderation_recipients', $emails, $comment_id ) );
 	}
@@ -214,6 +227,7 @@ class Optin_Comment_Notifications_Test extends WP_UnitTestCase {
 		update_option( 'admin_email', $email );
 		update_option( 'moderation_notify', true );
 		wp_new_comment_notify_moderator( $comment_id );
+		apply_filters( 'notify_moderator', true, $comment_id );
 
 		$this->assertEquals( $emails, apply_filters( 'comment_moderation_recipients', $emails, $comment_id ) );
 	}
