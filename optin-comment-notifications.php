@@ -21,6 +21,27 @@
  * @version 1.2
  */
 
+/**
+ * TODO:
+ * - Change email content via 'comment_notification_text' to replace text that
+ *   refer to "your post" with "the post", since it's not the post author being
+ *   notified. Also, to omit links to post author functionality (trash, spam)
+ *   for users who don't have 'edit_comment' capabilities.
+ * - Actually, since 'comment_notification_text' is the content sent to all
+ *   recipients, including the post author who legitimately needs the comment
+ *   handling links, this plugin is better off not relying on
+ *   wp_notify_postauthor(). Instead, hook into 'comment_notification_headers'.
+ *   Reuse the headers passed to it. Replicate code to determine subject, and
+ *   customize copy of code that formulates content to refer to "the post" and
+ *   to not include admin links. (Future version can define the admin and
+ *   non-admin versions of the email, then decide on per-user basis which they
+ *   get.) Then send the emails itself. (Might need to add check so post author
+ *   isn't notified twice about a comment to their own post since
+ *   wp_notify_postauthor() is now separate and will do its own thing.)
+ * - Add method last_emailed() that stores the list of emails returned by
+ *   add_comment_notification_recipients(). Primarily for unit testing.
+ */
+
 /*
 	Copyright (c) 2014-2018 by Scott Reilly (aka coffee2code)
 
