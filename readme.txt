@@ -86,6 +86,7 @@ Yes. Users with the 'edit_users' capability (administrators, basically) and can 
 * Unit tests:
     * Change: Test notifications by invoking `wp_new_comment_notify_postauthor()` rather than plugin class method
     * Change: Add and improve tests relating to 'notify_moderator'
+    * Change: Remove unnecessary mocking of posts
     * Change: Minor whitespace tweaks to bootstrap
     * Change: Use correct header @package name in bootstrap
 * Change: Note compatibility through WP 4.9+

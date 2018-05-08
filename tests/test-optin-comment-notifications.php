@@ -69,7 +69,6 @@ class Optin_Comment_Notifications_Test extends WP_UnitTestCase {
 	}
 
 	public function test_opted_in_user_is_notified_about_new_comment() {
-		$post_id    = $this->factory->post->create();
 		$email      = 'admin@example.com';
 		$user_id    = $this->create_user( $email, true, 'administrator' );
 		$comment_id = $this->factory->comment->create( array( 'comment_approved' => '1' ) );
@@ -81,7 +80,6 @@ class Optin_Comment_Notifications_Test extends WP_UnitTestCase {
 	}
 
 	public function test_non_opted_in_user_is_not_notified_about_new_comment() {
-		$post_id    = $this->factory->post->create();
 		$email      = 'admin@example.com';
 		$user_id    = $this->create_user( $email, false, 'administrator' );
 		$comment_id = $this->factory->comment->create( array( 'comment_approved' => '1' ) );
@@ -93,7 +91,6 @@ class Optin_Comment_Notifications_Test extends WP_UnitTestCase {
 	}
 
 	public function test_opted_in_user_is_not_notified_about_their_own_comment() {
-		$post_id    = $this->factory->post->create();
 		$email      = 'admin@example.com';
 		$user_id    = $this->create_user( $email, true, 'administrator' );
 		$comment_id = $this->factory->comment->create( array( 'user_id' => $user_id, 'comment_approved' => '1' ) );
@@ -104,7 +101,6 @@ class Optin_Comment_Notifications_Test extends WP_UnitTestCase {
 	}
 
 	public function test_commenter_with_moderate_comments_capability_is_notified_about_moderated_comment() {
-		$post_id    = $this->factory->post->create();
 		$email      = 'admin@example.com';
 		$user_id    = $this->create_user( $email, true, 'administrator' );
 		$comment_id = $this->factory->comment->create( array( 'comment_approved' => '0' ) );
@@ -116,7 +112,6 @@ class Optin_Comment_Notifications_Test extends WP_UnitTestCase {
 	}
 
 	public function test_commenter_without_moderate_comments_capability_is_not_notified_about_moderated_comment() {
-		$post_id    = $this->factory->post->create();
 		$email      = 'subscriber@example.com';
 		$user_id    = $this->create_user( $email, true, 'subscriber' );
 		$comment_id = $this->factory->comment->create( array( 'comment_approved' => '0' ) );
@@ -128,7 +123,6 @@ class Optin_Comment_Notifications_Test extends WP_UnitTestCase {
 	}
 
 	public function test_opted_in_user_is_not_notified_about_new_comment_if_capability_is_changed() {
-		$post_id    = $this->factory->post->create();
 		$email      = 'subscriber@example.com';
 		$user_id    = $this->create_user( $email, true, 'subscriber' );
 		$comment_id = $this->factory->comment->create( array( 'comment_approved' => '1' ) );
@@ -139,7 +133,6 @@ class Optin_Comment_Notifications_Test extends WP_UnitTestCase {
 	}
 
 	public function test_opted_in_user_is_not_notified_about_spam_comment() {
-		$post_id    = $this->factory->post->create();
 		$email      = 'admin@example.com';
 		$user_id    = $this->create_user( $email, true, 'subscriber' );
 		$comment_id = $this->factory->comment->create( array( 'comment_approved' => 'spam' ) );
@@ -151,7 +144,6 @@ class Optin_Comment_Notifications_Test extends WP_UnitTestCase {
 	}
 
 	public function test_user_is_not_double_notified() {
-		$post_id    = $this->factory->post->create();
 		$email      = 'admin@example.com';
 		$user_id    = $this->create_user( $email, true, 'administrator' );
 		$comment_id = $this->factory->comment->create( array( 'comment_approved' => '1' ) );
@@ -162,7 +154,6 @@ class Optin_Comment_Notifications_Test extends WP_UnitTestCase {
 	}
 
 	public function test_verify_existing_notification_email_addresses_are_not_dropped_when_adding() {
-		$post_id    = $this->factory->post->create();
 		$email      = 'admin@example.com';
 		$emails     = array( 'a@example.com', 'b@example.com' );
 		$user_id    = $this->create_user( $email, true, 'administrator' );
@@ -175,7 +166,6 @@ class Optin_Comment_Notifications_Test extends WP_UnitTestCase {
 	}
 
 	public function test_verify_existing_notification_email_addresses_are_not_dropped_when_not_adding() {
-		$post_id    = $this->factory->post->create();
 		$email      = 'subscriber@example.com';
 		$emails     = array( 'a@example.com', 'b@example.com' );
 		$user_id    = $this->create_user( $email, false, 'subscriber' );
@@ -189,7 +179,6 @@ class Optin_Comment_Notifications_Test extends WP_UnitTestCase {
 	}
 
 	public function test_verify_existing_notification_email_addresses_are_dropped_when_comments_notify_is_false() {
-		$post_id    = $this->factory->post->create();
 		$email      = 'admin@example.com';
 		$emails     = array( 'a@example.com', 'b@example.com' );
 		$user_id    = $this->create_user( $email, true, 'administrator' );
@@ -203,7 +192,6 @@ class Optin_Comment_Notifications_Test extends WP_UnitTestCase {
 	}
 
 	public function test_verify_existing_notification_email_addresses_are_dropped_when_notify_moderator_is_false() {
-		$post_id    = $this->factory->post->create();
 		$email      = 'admin@example.com';
 		$emails     = array( 'a@example.com', 'b@example.com' );
 		$user_id    = $this->create_user( $email, false, 'administrator' );
@@ -218,7 +206,6 @@ class Optin_Comment_Notifications_Test extends WP_UnitTestCase {
 	}
 
 	public function test_verify_existing_notification_email_addresses_are_not_dropped_when_notify_moderator_is_true() {
-		$post_id    = $this->factory->post->create();
 		$email      = 'admin@example.com';
 		$emails     = array( $email, 'a@example.com', 'b@example.com' );
 		$user_id    = $this->create_user( $email, false, 'administrator' );
