@@ -6,7 +6,7 @@ License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Requires at least: 4.6
 Tested up to: 4.9
-Stable tag: 1.2
+Stable tag: 1.3
 
 Allows users to opt into receiving a notification email whenever a comment is made to the site.
 
@@ -71,6 +71,7 @@ function restrict_optin_comment_notifications( $default, $caps ) {
 add_filter( 'c2c_optin_comment_notifications_has_cap', 'restrict_optin_comment_notifications', 10, 2 );
 `
 
+
 = Can an administrator configure the setting for another user? =
 
 Yes. Users with the 'edit_users' capability (administrators, basically) and can edit the profile of another user can configure this plugin for that user. The checkbox is labeled "Email this user whenever a comment is submitted to the site.".
@@ -78,11 +79,11 @@ Yes. Users with the 'edit_users' capability (administrators, basically) and can 
 
 == Changelog ==
 
-= () =
+= 1.3 (2018-05-07) =
 * Bugfix: Ensure comment notifications are sent even if core's 'comments_notify' or 'notify_moderator' settings is false
 * Change: Don't notify users of spam comments
 * New: Add README.md
-* Change: Add GitHub link to readme
+* New: Add GitHub link to readme
 * Unit tests:
     * Change: Test notifications by invoking `wp_new_comment_notify_postauthor()` rather than plugin class method
     * Change: Add and improve tests relating to 'notify_moderator'
@@ -145,7 +146,11 @@ Details:
 = 0.9 =
 * Initial release as theme-packaged plugin on developer.wordpress.org
 
+
 == Upgrade Notice ==
+
+= 1.3 =
+Recommended update: bugfix to ensure advertised functionality works even if related core settings are disabled, prevented notifications for spam comments, added README.md, noted compatibility through WP 4.9+, and updated copyright date (2018)
 
 = 1.2 =
 Minor feature update: added ability for admins to edit the setting for other users, updated unit test bootstrap file, noted compatibility through WP 4.7+, and updated copyright date (2017)

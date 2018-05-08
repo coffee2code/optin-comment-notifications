@@ -1,7 +1,7 @@
 <?php
 /**
  * Plugin Name: Optin Comment Notifications
- * Version:     1.2
+ * Version:     1.3
  * Plugin URI:  http://coffee2code.com/wp-plugins/optin-comment-notifications/
  * Author:      Scott Reilly
  * Author URI:  http://coffee2code.com/
@@ -18,7 +18,7 @@
  *
  * @package Optin_Comment_Notifications
  * @author  Scott Reilly
- * @version 1.2
+ * @version 1.3
  */
 
 /**
@@ -121,7 +121,7 @@ class c2c_Optin_Comment_Notifications {
 	 * @since 1.0
 	 */
 	public static function version() {
-		return '1.2';
+		return '1.3';
 	}
 
 	/**
