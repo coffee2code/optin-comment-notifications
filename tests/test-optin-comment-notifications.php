@@ -137,9 +137,10 @@ class Optin_Comment_Notifications_Test extends WP_UnitTestCase {
 		$user_id    = $this->create_user( $email, true, 'subscriber' );
 		$comment_id = $this->factory->comment->create( array( 'comment_approved' => 'spam' ) );
 
-		wp_new_comment_notify_postauthor( $comment_id );
+		$sent = wp_new_comment_notify_postauthor( $comment_id );
 		apply_filters( 'notify_post_author', true, $comment_id );
 
+		$this->assertFalse( $sent );
 		$this->assertEmpty( apply_filters( 'comment_notification_recipients', array(), $comment_id ) );
 	}
 
@@ -202,7 +203,7 @@ class Optin_Comment_Notifications_Test extends WP_UnitTestCase {
 		wp_new_comment_notify_moderator( $comment_id );
 		apply_filters( 'notify_moderator', false, $comment_id );
 
-		$this->assertEquals( array(), apply_filters( 'comment_moderation_recipients', $emails, $comment_id ) );
+		$this->assertEmpty( apply_filters( 'comment_moderation_recipients', $emails, $comment_id ) );
 	}
 
 	public function test_verify_existing_notification_email_addresses_are_not_dropped_when_notify_moderator_is_true() {
