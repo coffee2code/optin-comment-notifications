@@ -261,6 +261,8 @@ class c2c_Optin_Comment_Notifications {
 			$emails = array();
 		}
 
+		self::$orig_notify_post_author = self::$orig_notify_moderator = null;
+
 		// Get users who opted in to comment notifications.
 		$blog_prefix = $wpdb->get_blog_prefix( get_current_blog_id() );
 		$user_query = new WP_User_Query( array(
