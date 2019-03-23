@@ -3,7 +3,7 @@ Contributors: coffee2code
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=6ARCFJ9TX3522
 Tags: comment, comments, notifications, email, commenting, coffee2code
 License: GPLv2 or later
-License URI: http://www.gnu.org/licenses/gpl-2.0.html
+License URI: https://www.gnu.org/licenses/gpl-2.0.html
 Requires at least: 4.6
 Tested up to: 4.9
 Stable tag: 1.3
@@ -78,6 +78,9 @@ Yes. Users with the 'edit_users' capability (administrators, basically) and can 
 
 
 == Changelog ==
+
+= () =
+* Change: Update License URI to be HTTPS
 
 = 1.3 (2018-05-07) =
 * Bugfix: Ensure comment notifications are sent even if core's 'comments_notify' or 'notify_moderator' settings is false
