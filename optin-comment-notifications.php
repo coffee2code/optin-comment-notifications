@@ -130,15 +130,6 @@ class c2c_Optin_Comment_Notifications {
 	 * @access public
 	 */
 	public static function init() {
-		add_action( 'init', array( __CLASS__, 'do_init' ) );
-	}
-
-	/**
-	 * Initialization
-	 *
-	 * @access public
-	 */
-	public static function do_init() {
 		// Load textdomain
 		load_plugin_textdomain( 'optin-comment-notifications' );
 
