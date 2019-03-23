@@ -80,6 +80,7 @@ Yes. Users with the 'edit_users' capability (administrators, basically) and can 
 == Changelog ==
 
 = () =
+* Change: Update copyright date (2019)
 * Change: Update License URI to be HTTPS
 
 = 1.3 (2018-05-07) =
