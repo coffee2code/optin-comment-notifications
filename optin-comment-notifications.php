@@ -377,6 +377,6 @@ class c2c_Optin_Comment_Notifications {
 	}
 } // c2c_Optin_Comment_Notifications
 
-c2c_Optin_Comment_Notifications::init();
+add_action( 'plugins_loaded', array( 'c2c_Optin_Comment_Notifications', 'init' ) );
 
 endif; // end if !class_exists()
