@@ -80,6 +80,7 @@ Yes. Users with the 'edit_users' capability (administrators, basically) and can 
 == Changelog ==
 
 = () =
+* New: Add CHANGELOG.md file and move all but most recent changelog entries into it
 * Change: Initialize plugin on 'plugins_loaded' action instead of on load
 * Change: Merge `do_init()` into `init()`
 * Change: Note compatibility through WP 5.1+
@@ -115,44 +116,7 @@ Yes. Users with the 'edit_users' capability (administrators, basically) and can 
 * Change: Update copyright date (2017).
 * Change: Update installation instruction to prefer built-in installer over .zip file
 
-= 1.1 (2016-03-19) =
-Highlights:
-
-* This release largely consists of minor behind-the-scenes changes.
-
-Details:
-
-* Bugfix: Don't use translation functions to output strings not needing translation.
-* Change: Add support for language packs:
-    * Don't load textdomain from file.
-    * Remove .pot file and /lang subdirectory.
-    * Remove 'Domain Path' plugin header.
-* New: Add LICENSE file.
-* New: Add empty index.php to prevent files from being listed if web server has enabled directory listings.
-* Change: Explicitly declare methods in unit tests as public or protected.
-* Change: Minor improvements to inline docs and test docs.
-* Change: Note compatibility through WP 4.4+.
-* Change: Remove support for WordPress older than 4.1.
-* Change: Update copyright date (2016).
-
-= 1.0 (2015-01-12) =
-* Initial public release
-* Convert into true plugin
-* Permit any user to subscribe to all comments
-* Add 'c2c_optin_comment_notifications_has_cap' filter to enable customizing capability
-* Change meta key name to 'c2c_comment_notification_optin'
-* Change yes_meta_value from 'Y' to '1'
-* Change from *_usermeta() to *_user_option()
-* Ensure user being notified has the capability to receive notifications
-* For moderated comments, only notify those who have the capability to moderate comments
-* Change class name to c2c_Optin_Comment_Notifications
-* Add unit tests
-* Add icon
-* Add banner
-* Add readme
-
-= 0.9 =
-* Initial release as theme-packaged plugin on developer.wordpress.org
+_Full changelog is available in [CHANGELOG.md](https://github.com/coffee2code/optin-comment-notifications/blob/master/CHANGELOG.md)._
 
 
 == Upgrade Notice ==
