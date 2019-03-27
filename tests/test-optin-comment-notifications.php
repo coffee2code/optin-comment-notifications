@@ -65,7 +65,7 @@ class Optin_Comment_Notifications_Test extends WP_UnitTestCase {
 
 
 	public function test_plugin_version() {
-		$this->assertEquals( '1.3', c2c_Optin_Comment_Notifications::version() );
+		$this->assertEquals( '1.4', c2c_Optin_Comment_Notifications::version() );
 	}
 
 	public function test_opted_in_user_is_notified_about_new_comment() {

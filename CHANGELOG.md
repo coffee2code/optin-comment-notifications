@@ -1,5 +1,14 @@
 # Changelog
 
+## 1.4 _(2019-03-26)_
+* New: Add CHANGELOG.md file and move all but most recent changelog entries into it
+* Change: Initialize plugin on 'plugins_loaded' action instead of on load
+* Change: Merge `do_init()` into `init()`
+* Change: Note compatibility through WP 5.1+
+* Change: Update copyright date (2019)
+* Change: Update License URI to be HTTPS
+* Change: Split paragraph in README.md's "Support" section into two
+
 ## 1.3 _(2018-05-07)_
 * Bugfix: Ensure comment notifications are sent even if core's `comments_notify` or `notify_moderator` settings is false
 * Change: Don't notify users of spam comments

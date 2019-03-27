@@ -6,7 +6,7 @@ License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 Requires at least: 4.6
 Tested up to: 5.1
-Stable tag: 1.3
+Stable tag: 1.4
 
 Allows users to opt into receiving a notification email whenever a comment is made to the site.
 
@@ -79,7 +79,7 @@ Yes. Users with the 'edit_users' capability (administrators, basically) and can 
 
 == Changelog ==
 
-= () =
+= 1.4 (2019-03-26) =
 * New: Add CHANGELOG.md file and move all but most recent changelog entries into it
 * Change: Initialize plugin on 'plugins_loaded' action instead of on load
 * Change: Merge `do_init()` into `init()`
@@ -120,6 +120,9 @@ _Full changelog is available in [CHANGELOG.md](https://github.com/coffee2code/op
 
 
 == Upgrade Notice ==
+
+= 1.4 =
+Minor update: tweaked plugin initialization, dropped compatibility with WP older than 4.6, noted compatibility through WP 5.1+, created CHANGELOG.md to store historical changelog outside of readme.txt, and updated copyright date (2019)
 
 = 1.3 =
 Recommended update: bugfix to ensure advertised functionality works even if related core settings are disabled, prevented notifications for spam comments, added README.md, noted compatibility through WP 4.9+, and updated copyright date (2018)
